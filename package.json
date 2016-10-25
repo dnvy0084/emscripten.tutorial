@@ -1,0 +1,23 @@
+{
+  "name": "emscripten.tutorial",
+  "version": "1.0.0",
+  "description": "C/C++ to JavaScript with Emscripten",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-01": "emcc ./01.ccall_cwrap/src/ccall_cwrap.cpp -o ./01.ccall_cwrap/js/bin/lib.js -O1 --closure 1 -s EXPORTED_FUNCTIONS='[\"_sumAandB\"]'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnvy0084/emscripten.tutorial.git"
+  },
+  "author": "Kim.Jinhoon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dnvy0084/emscripten.tutorial/issues"
+  },
+  "homepage": "https://github.com/dnvy0084/emscripten.tutorial#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
