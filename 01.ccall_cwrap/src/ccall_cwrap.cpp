@@ -26,14 +26,15 @@ extern "C"{
 		printf("%s %s\n", str, s );
 	}
 
-	int sumAllInArray( void * p, int len ){
+	int sumAllInArray( unsigned int * p, int len ){
 
 		int n = 0;
 
 		for(int i = 0; i < len; i++){
-			n += *( (char*)p + i * sizeof(char) );
 
-			printf("%d\n", *( (char*)p + i * sizeof(char) ) );
+			n += *( p + i );
+
+			printf("%d-%d\n", i, *( p + i ) );
 		}
 
 		return n;

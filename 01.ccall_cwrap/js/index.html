@@ -34,12 +34,15 @@
 				Module.ccall( "print", "void", [ "string" ], [ "hello," ] )
 			);
 
-			var a = [ 1,2,3,4,5,6,7,8,9,10 ];
+			var data = new Uint32Array( [ 1,2,3,4,5,6,7,8,9,10 ] );
+			var uint_p = Module._malloc( data.length * data.BYTES_PER_ELEMENT );
 
-			var int_p = allocate( a, "i8", ALLOC_NORMAL );
+			console.log( data, uint_p, data.BYTES_PER_ELEMENT, data.length * data.BYTES_PER_ELEMENT );
+
+			Module.HEAPU8.set( data, uint_p );
 
 			console.log( "ccall sumAllInArray( a )",  
-				Module.ccall( "sumAllInArray", 'number', [ 'number', 'number' ], [ int_p, a.length ] )
+				Module.ccall( "sumAllInArray", 'number', [ 'number', 'number' ], [ uint_p, data.length ] )
 			);
 		}
 
