@@ -3,18 +3,21 @@
 	<title>Emscripten ccall, cwrap example</title>
 </head>
 <body>
+	See Console!
 	<script type="text/javascript" src="../../js/dat.gui.js"></script>
 	<script type="text/javascript" src="bin/lib.js"></script>
 	<script type="text/javascript">
 
 		// 1. 소스를 임베드 한 환경이라면 window의 Module 객체로 컴파일 된다. 
 		// 2. commonJS, AMD 등도 대응되어 있어 browserify, webpack 등 bundler를 통해 require('./bin/lib.js')로 사용가능하다. 
+		// 3. 컴파일 옵션에 따라 한쪽만 지원하도록 설정할 수 있는지 확인이 필요하다. 
 		console.log( Module );
 
 		var gui = new dat.GUI();
 
 		gui.add( window, "ccall" );
 		gui.add( window, "cwrap" );
+		gui.add( window, "directCall" );
 
 		function ccall(){
 
@@ -26,15 +29,43 @@
 			console.log( "ccall sumAandB( 5, 5 )", 
 				Module.ccall( "sumAandB", 'number', [ 'number', 'number' ], [ 5, 5 ] ) 
 			);
+
+			console.log( "ccall print( 'hello,' )", 
+				Module.ccall( "print", "void", [ "string" ], [ "hello," ] )
+			);
+
+			var a = [ 1,2,3,4,5,6,7,8,9,10 ];
+
+			var int_p = allocate( a, "i8", ALLOC_NORMAL );
+
+			console.log( "ccall sumAllInArray( a )",  
+				Module.ccall( "sumAllInArray", 'number', [ 'number', 'number' ], [ int_p, a.length ] )
+			);
 		}
 
 		function cwrap(){
 
 			var sumWithConst = Module.cwrap( "sumWithConst", 'number', [ 'number' ] );
 			var sumAandB = Module.cwrap( 'sumAandB', 'number', [ 'number', 'number' ] );
+			var print = Module.cwrap( 'print', 'void', [ 'string' ] );
 
 			console.log( "call function from cwrap.sumWithConst( 10 )", sumWithConst( 10 ) );
 			console.log( "call function from cwrap.sumAandB( 5, 5 )", sumAandB( 5, 5 ) );
+			console.log( "call function from cwrap.print('hello,')", print( 'hello,' ) );
+		}
+
+		function directCall(){
+
+			console.log( "call directly Module._sumWithConst( 10 )", Module._sumWithConst( 10 ) );
+			console.log( "call directly Module._sumAandB( 5, 5 );", Module._sumAandB( 5, 5 ) );
+
+			var charPtr = allocate( intArrayFromString( "hello," ), 'i8', ALLOC_NORMAL );
+
+			console.log( charPtr, Pointer_stringify( charPtr ) );
+
+			console.log( "call directly Module._print( 'hello,' );", Module._print( charPtr ) );
+
+			Module._free( charPtr );
 		}
 
 	</script>

@@ -7,6 +7,7 @@ extern "C"{
 	int sumAandB( int, int );
 
 	const int n = 3;
+	const char * s = "world!";
 
 	// js로 컴파일 시 접두어로 항상 문자열 "_"가 붙는다. 
 	// EXPORTED_FUNCTIONS로 지정하지 않은 함수도 호출 가능하다. 
@@ -22,6 +23,19 @@ extern "C"{
 
 	void print( char * str ){
 
-		printf("%s\n", str );
+		printf("%s %s\n", str, s );
+	}
+
+	int sumAllInArray( void * p, int len ){
+
+		int n = 0;
+
+		for(int i = 0; i < len; i++){
+			n += *( (char*)p + i * sizeof(char) );
+
+			printf("%d\n", *( (char*)p + i * sizeof(char) ) );
+		}
+
+		return n;
 	}
 }

@@ -16,7 +16,8 @@ var build_01 = {
 	exportedFunctions: [
 		"sumWithConst",
 		"sumAandB",
-		"print"
+		"print",
+		"sumAllInArray",
 	]
 }
 
@@ -25,11 +26,11 @@ gulp.task( 'build-01', function(){
 	exec( getCommand( build_01 ), (err, stdout, stderr) =>{
 
 		if(err){
-			console.error( 'exec error: ${err}' );
+			console.error( 'exec error: %s', err );
 			return;
 		}
 
-		console.log( 'stdout: ${stdout}' );
+		console.log( 'stdout: %s', stdout );
 	}); 
 })
 
